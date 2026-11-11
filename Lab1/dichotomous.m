@@ -5,7 +5,7 @@ function [X,N]=dichotomous(F,a,b,tol)
     while (b-a > tol) && (N < 100)
         m_l = (a+b)/2 - delta;
         m_r = (a+b)/2 + delta;
-        disp([N a b m_l m_r b-a])
+        % disp([N a b m_l m_r b-a])
         if F(m_l) > F(m_r) 
             a = m_l;
         else 

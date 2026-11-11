@@ -1,26 +1,32 @@
-function [X,N]=goldensection(F,a,b,tol)
+function [X,N] = goldensection(F,a,b,tol)
     tau = (sqrt(5)-1)/2; % golden ratio
-    
-    N = 1;
+    N = 0;
     X = [];
-    L = b-a;
-    m_l = b - L*tau;
-    m_r = a + L*tau;
-    bracket = [a m_l b];
-    while (bracket(3)-bracket(1) > tol) && (N < 100)
-        X(end+1, :) = [m_l, m_r, L];
-        disp([N m_l m_r L])
+    m_l = b - tau*(b-a);
+    m_r = a + tau*(b-a);
+    f_l = F(m_l);
+    f_r = F(m_r);
+    while (b-a > tol) && (N < 100)
+        if f_l < f_r
+            b = m_r;
+
+            m_r = m_l;
+            f_r = f_l;
     
-        if F(m_l) < F(m_r)
-            bracket = [bracket(1), m_l, m_r];
+            m_l = b - tau*(b-a);
+            f_l = F(m_l);
         else
-            bracket = [m_l, m_r, bracket(3)];
-        end
-        L = bracket(3)-bracket(1);
+            a = m_l;
     
-        m_l = bracket(3) - L*tau;
-        m_r = bracket(1) + L*tau;
-        
+            m_l = m_r;
+            f_l = f_r;
+    
+            m_r = a + tau*(b-a);
+            f_r = F(m_r);
+        end
+    
+        X(end+1, :) = [a, b, b-a];
+    
         N = N+1;
     end
 end
